@@ -11,7 +11,7 @@
     <groupId>com.piterjk</groupId>
     <artifactId>springboot-demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>springboot-demo</name>
     <description>springboot-demo</description>
     <url/>
@@ -99,10 +99,16 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
+        <!-- PostgreSQL JDBC 드라이버 -->
         <dependency>
-            <groupId>com.oracle.database.jdbc</groupId>
-            <artifactId>ojdbc11</artifactId>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <!-- HikariCP (Spring Boot 기본 커넥션 풀) -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -146,6 +152,26 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <spring.profiles.active>dev</spring.profiles.active>
+                <filtering>true</filtering>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <spring.profiles.active>prod</spring.profiles.active>
+                <filtering>true</filtering>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>
