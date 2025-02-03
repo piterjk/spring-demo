@@ -5,30 +5,29 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import com.piterjk.springbootdemo.component.CustomAccessDeniedHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -42,6 +41,7 @@ import java.util.UUID;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     private final org.springframework.web.cors.CorsConfigurationSource corsConfigurationSource;
@@ -55,7 +55,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http, JwtDecoder jwtDecoder) throws Exception {
         return http.addFilterBefore(corsFilter(), CorsFilter.class) // CORS 필터 추가
                 .authorizeHttpRequests(auth->{
-            auth.requestMatchers("/auth/**").permitAll()
+            auth.requestMatchers("/auth/**","/login","/error","/access-denied","/WEB-INF/views/**").permitAll()
                     .requestMatchers("/authenticate/**").hasRole("USER")
                     .requestMatchers("/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated();
@@ -65,6 +65,7 @@ public class SecurityConfig {
             })//세션 사용하지 않는다.
             //.httpBasic(Customizer.withDefaults()) // HTTP Basic 인증 활성화
             .formLogin(from->from
+                    .loginPage("/login")
                     .failureUrl("/login?error=true") // 로그인 실패 시 이동할 URL
                     .defaultSuccessUrl("/test", true)
                     .permitAll()
@@ -85,6 +86,7 @@ public class SecurityConfig {
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder))) // JWT 방식 적용);
             .exceptionHandling(ex -> ex
                     .authenticationEntryPoint(new CustomAuthenticationEntryPoint()) // 401 Unauthorized 처리
+                    .accessDeniedHandler(new CustomAccessDeniedHandler())
             )
             .build();
 
@@ -130,6 +132,7 @@ public class SecurityConfig {
 
         @Override
         public void commence(HttpServletRequest request, HttpServletResponse response, org.springframework.security.core.AuthenticationException authException) throws IOException {
+
             // AJAX 또는 API 요청이면 JSON 응답 반환
             if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With")) || request.getRequestURI().startsWith("/api/")) {
                 response.setContentType("application/json");
@@ -144,14 +147,15 @@ public class SecurityConfig {
         }
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        var user = User.withUsername("piterjk")
-                .password("{noop}piterjk")
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(user);
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        System.out.println(passwordEncoder().encode("piterjk"));
+//        var user = User.withUsername("piterjk")
+//                .password(passwordEncoder().encode("piterjk"))
+//                .roles("USER")
+//                .build();
+//        return new InMemoryUserDetailsManager(user);
+//    }
 
     @Bean
     public KeyPair keyPair() {
@@ -189,6 +193,12 @@ public class SecurityConfig {
     @Bean
     public JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwkSource) {
         return new NimbusJwtEncoder(jwkSource);
+    }
+
+    // ✅ PasswordEncoder 빈 추가 (Spring Security에서 필수)
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 

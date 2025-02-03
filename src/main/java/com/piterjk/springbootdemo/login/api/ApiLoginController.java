@@ -1,4 +1,4 @@
-package com.piterjk.springbootdemo.login;
+package com.piterjk.springbootdemo.login.api;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,14 +14,15 @@ import java.util.HashMap;
 import java.util.stream.Collectors;
 
 @RestController
-public class LoginController {
+public class ApiLoginController {
     private final JwtEncoder jwtEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public LoginController(JwtEncoder jwtEncoder, AuthenticationManager authenticationManager) {
+    public ApiLoginController(JwtEncoder jwtEncoder, AuthenticationManager authenticationManager) {
         this.jwtEncoder = jwtEncoder;
         this.authenticationManager = authenticationManager;
     }
+
 
     @PostMapping("/authenticate")
     public JwtRespose authentication(Authentication authentication) {
@@ -34,8 +35,9 @@ public class LoginController {
         return "OAuth 인증 처리 후 데이터 반환 처리 되었습니다." + now.toString();
     }
 
+
     @PostMapping("/auth/login")
-    public JwtRespose login(@RequestBody HashMap<String,Object> params) {
+    public JwtRespose authLogin(@RequestBody HashMap<String,Object> params) {
         String username = (String) params.get("username");
         String password = (String) params.get("password");
         System.out.println("username: " + username + " password: " + password);
