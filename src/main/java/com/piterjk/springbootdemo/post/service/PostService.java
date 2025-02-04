@@ -1,9 +1,8 @@
 package com.piterjk.springbootdemo.post.service;
 
 import com.piterjk.springbootdemo.post.entity.Post;
-import com.piterjk.springbootdemo.users.entity.User;
+import org.springframework.data.domain.Page;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface PostService {
@@ -13,5 +12,5 @@ public interface PostService {
 
     Post update(Long id, Post post);
 
-    List<Post> findAll();
+    Page<Post> findAll(int page, int size);
 }

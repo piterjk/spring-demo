@@ -3,6 +3,9 @@ package com.piterjk.springbootdemo.post.service.impl;
 import com.piterjk.springbootdemo.post.entity.Post;
 import com.piterjk.springbootdemo.post.repository.PostRepository;
 import com.piterjk.springbootdemo.post.service.PostService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +22,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> findAll(){
-        return postRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+    public Page<Post> findAll(int page, int size){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
+        return postRepository.findAll(pageable);
     }
 
     @Override

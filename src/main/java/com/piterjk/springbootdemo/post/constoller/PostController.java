@@ -15,10 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -36,8 +33,10 @@ public class PostController {
 
     @GetMapping("/post/list")
     @PreAuthorize("hasRole('USER')")
-    public String list(Model model){
-        model.addAttribute("postList", postService.findAll());
+    public String list(@RequestParam(defaultValue = "0") int page,
+                       @RequestParam(defaultValue = "15") int size,
+                       Model model){
+        model.addAttribute("postPage", postService.findAll(page, size));
         return "post/list";
     }
 

@@ -26,7 +26,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach var="post" items="${postList}">
+                    <c:forEach var="post" items="${postPage.content}">
                         <tr>
                             <th>${post.title}</th>
                             <th>${post.content}</th>
@@ -34,6 +34,29 @@
                     </c:forEach>
                     </tbody>
                 </table>
+                <!-- Pagination -->
+                <nav class="mt-5">
+                    <ul class="pagination">
+                        <c:if test="${postPage.number > 0}">
+                            <li class="page-item">
+                                <a class="page-link" href="?page=${postPage.number - 1}&size=${postPage.size}">이전</a>
+                            </li>
+                        </c:if>
+
+                        <c:forEach var="i" begin="0" end="${postPage.totalPages - 1}">
+                            <li class="page-item ${i == postPage.number ? 'active' : ''}">
+                                <a class="page-link" href="?page=${i}&size=${postPage.size}">${i + 1}</a>
+                            </li>
+                        </c:forEach>
+
+                        <c:if test="${postPage.number < postPage.totalPages - 1}">
+                            <li class="page-item">
+                                <a class="page-link" href="?page=${postPage.number + 1}&size=${postPage.size}">다음</a>
+                            </li>
+                        </c:if>
+                    </ul>
+                </nav>
+
             </div>
 
 
