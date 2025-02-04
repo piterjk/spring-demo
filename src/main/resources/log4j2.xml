@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	<Properties>
+		<!-- 로그 파일 경로 설정 -->
+		<Property name="logPath">logs</Property>
+		<Property name="logFileName">app</Property>
+		<Property name="logPattern">%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n</Property>
+	</Properties>
+
+	<Appenders>
+		<!-- 콘솔 로그 출력 -->
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout>
+				<Pattern>${logPattern}</Pattern>
+			</PatternLayout>
+		</Console>
+
+		<!-- 파일 로그 출력 -->
+		<RollingFile name="FileAppender" fileName="${logPath}/${logFileName}.log"
+					 filePattern="${logPath}/archive/${logFileName}-%d{yyyy-MM-dd}.log.gz">
+			<PatternLayout>
+				<Pattern>${logPattern}</Pattern>
+			</PatternLayout>
+			<Policies>
+				<!-- 날짜별 롤링 설정 -->
+				<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+				<!-- 로그 파일 최대 보관 기간 (30일) -->
+				<Delete basePath="${logPath}/archive" maxDepth="1">
+					<IfFileName glob="*.log.gz"/>
+					<IfLastModified age="30d"/>
+				</Delete>
+			</Policies>
+		</RollingFile>
+	</Appenders>
+
+	<Loggers>
+		<!-- 특정 패키지 로그 레벨 설정 -->
+		<Logger name="com.piterjk.springbootdemo" level="DEBUG" additivity="false">
+			<AppenderRef ref="Console"/>
+			<AppenderRef ref="FileAppender"/>
+		</Logger>
+
+		<Logger name="java.sql" level="INFO" additivity="false">
+			<AppenderRef ref="Console"/>
+			<AppenderRef ref="FileAppender"/>
+		</Logger>
+		<Logger name="jdbc.sqlonly" level="OFF" additivity="false">
+			<AppenderRef ref="Console"/>
+			<AppenderRef ref="FileAppender"/>
+		</Logger>
+		<Logger name="jdbc.sqltiming" level="DEBUG" additivity="false">
+			<AppenderRef ref="Console"/>
+			<AppenderRef ref="FileAppender"/>
+		</Logger>
+		<Logger name="jdbc.resultset" level="OFF" additivity="false">
+			<AppenderRef ref="Console"/>
+			<AppenderRef ref="FileAppender"/>
+		</Logger>
+
+		<!-- 루트 로거 설정 -->
+		<Root level="INFO">
+			<AppenderRef ref="Console"/>
+			<AppenderRef ref="FileAppender"/>
+		</Root>
+	</Loggers>
+</Configuration>
