@@ -60,10 +60,17 @@ public class AppSecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http, JwtDecoder jwtDecoder) throws Exception {
         return http.addFilterBefore(corsFilter(), CorsFilter.class) // CORS 필터 추가
                 .authorizeHttpRequests(auth->{
-            auth.requestMatchers("/assets/**","/auth/**","/login","/error","/access-denied","/WEB-INF/views/**").permitAll()
-                    .requestMatchers("/authenticate/**").hasRole("USER")
-                    .requestMatchers("/admin/**").hasRole("ADMIN")
-                    .anyRequest().authenticated();
+                    auth.requestMatchers(
+                                    "/assets/**",
+                                    "/auth/**",
+                                    "/login",
+                                    "/error",
+                                    "/access-denied",
+                                    "/WEB-INF/views/**").permitAll()
+                        .requestMatchers("/").hasAnyRole("USER","ADMIN")
+                        .requestMatchers("/authenticate/**").hasRole("USER")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .anyRequest().authenticated();
             })
             .sessionManagement(session->{
                 session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
@@ -72,7 +79,7 @@ public class AppSecurityConfig {
             .formLogin(from->from
                     .loginPage("/login")
                     .failureUrl("/login?error=true") // 로그인 실패 시 이동할 URL
-                    .defaultSuccessUrl("/test", true)
+                    .defaultSuccessUrl("/", true)
                     .permitAll()
             )
             .logout(logout -> logout

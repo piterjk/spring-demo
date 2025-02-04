@@ -18,8 +18,8 @@
 
 
             <div class="mb-3">
-                <table class="table table-striped">
-                    <thead>
+                <table class="table table-striped table-hover table-bordered">
+                    <thead class="table-dark">
                     <tr>
                         <th>제목</th>
                         <th>내용</th>
