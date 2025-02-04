@@ -40,6 +40,17 @@ public class PostController {
         return "post/list";
     }
 
+    @GetMapping("/post/view/{id}")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public String view(@PathVariable Long id,
+                         Model model
+    ) {
+
+        Optional<Post> post = postService.findById(id);
+        model.addAttribute("post", post.get());
+        return "post/view";
+    }
+
     @GetMapping("/post/register")
     @PreAuthorize("hasRole('ADMIN')")
     public String register(Model model){
@@ -78,7 +89,7 @@ public class PostController {
         appAclServiceHelper.grantPermission(savedPost, user, BasePermission.DELETE);
 
         //model.addAttribute("message", "게시글이 등록되었습니다!");
-        return "redirect:/post/register";
+        return "redirect:/post/list";
     }
 
     @GetMapping("/post/update/{id}")
@@ -107,7 +118,7 @@ public class PostController {
         }
 
         postService.update(id, post); // 서비스 계층에서 수정 처리
-        return "redirect:/post/update/" + id.toString(); // 수정 후 상세보기 페이지로 이동
+        return "redirect:/post/view/" + id.toString(); // 수정 후 상세보기 페이지로 이동
     }
 
 
