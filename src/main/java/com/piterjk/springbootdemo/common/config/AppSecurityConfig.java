@@ -58,6 +58,7 @@ public class AppSecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, JwtDecoder jwtDecoder) throws Exception {
+
         return http.addFilterBefore(corsFilter(), CorsFilter.class) // CORS 필터 추가
                 .authorizeHttpRequests(auth->{
                     auth.requestMatchers(
@@ -92,7 +93,8 @@ public class AppSecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)// CSRF 보호 비활성화 (API 서버의 경우)
             .headers(headers ->{
                     headers.frameOptions(frameOptions -> frameOptions.sameOrigin()) // X-Frame-Options 설정
-                            .contentSecurityPolicy(csp -> csp.policyDirectives("default-src 'self'")); // CSP 설정)
+                            .contentSecurityPolicy(
+                                    csp -> csp.policyDirectives("default-src 'self'; style-src 'self' 'nonce-3e54b9e6-40c0-425f-ac88-8a34dd0adc46'; script-src 'self' 'nonce-3e54b9e6-40c0-425f-ac88-8a34dd0adc46'")); // CSP 설정)
                     }
             )
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder))) // JWT 방식 적용);

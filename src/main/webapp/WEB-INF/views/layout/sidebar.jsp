@@ -23,10 +23,14 @@
     </symbol>
 </svg>
 
+<style nonce="3e54b9e6-40c0-425f-ac88-8a34dd0adc46">
+    .w-280 {width: 280px;}
+</style>
+
 <div id="sidebar" class="d-flex flex-nowrap">
     <h1 class="visually-hidden">Sidebars examples</h1>
 
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px;">
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary w-280">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
             <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
             <span class="fs-4">Sidebar</span>

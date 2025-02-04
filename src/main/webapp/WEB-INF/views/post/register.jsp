@@ -31,7 +31,10 @@
                 <form:errors path="content" cssClass="text-danger"/>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">등록</button>
+        <div class="mb-3 d-flex justify-content-between">
+            <button type="button" class="btn btn-primary"><a href="/post/list" class="text-white text-decoration-none">목록</a></button>
+            <button type="submit" class="btn btn-primary">등록</button>
+        </div>
         </form:form>
     </div>
 </div>

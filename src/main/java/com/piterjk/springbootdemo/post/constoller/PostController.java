@@ -52,13 +52,14 @@ public class PostController {
     }
 
     @GetMapping("/post/register")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public String register(Model model){
         model.addAttribute("post", new Post());
         return "post/register";
     }
 
     @PostMapping("/post/register")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public String submitForm(@Valid Post post, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "post/register"; // 유효성 검사를 통과하지 못하면 다시 폼 페이지로 이동
