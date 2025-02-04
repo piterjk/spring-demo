@@ -69,6 +69,7 @@ public class PostController {
         // 게시글 생성 후 작성자에게 ACL 권한 부여
         appAclServiceHelper.grantPermission(savedPost, user, BasePermission.READ);
         appAclServiceHelper.grantPermission(savedPost, user, BasePermission.WRITE);
+        appAclServiceHelper.grantPermission(savedPost, user, BasePermission.DELETE);
 
         //model.addAttribute("message", "게시글이 등록되었습니다!");
         return "redirect:/post/register";
