@@ -55,7 +55,7 @@ public class AppSecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http, JwtDecoder jwtDecoder) throws Exception {
         return http.addFilterBefore(corsFilter(), CorsFilter.class) // CORS 필터 추가
                 .authorizeHttpRequests(auth->{
-            auth.requestMatchers("/auth/**","/login","/error","/access-denied","/WEB-INF/views/**").permitAll()
+            auth.requestMatchers("/assets/**","/auth/**","/login","/error","/access-denied","/WEB-INF/views/**").permitAll()
                     .requestMatchers("/authenticate/**").hasRole("USER")
                     .requestMatchers("/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated();
