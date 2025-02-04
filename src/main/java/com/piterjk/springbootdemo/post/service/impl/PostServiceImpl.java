@@ -3,8 +3,10 @@ package com.piterjk.springbootdemo.post.service.impl;
 import com.piterjk.springbootdemo.post.entity.Post;
 import com.piterjk.springbootdemo.post.repository.PostRepository;
 import com.piterjk.springbootdemo.post.service.PostService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,6 +16,11 @@ public class PostServiceImpl implements PostService {
 
     public PostServiceImpl(PostRepository postRepository) {
         this.postRepository = postRepository;
+    }
+
+    @Override
+    public List<Post> findAll(){
+        return postRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
     @Override
@@ -35,5 +42,6 @@ public class PostServiceImpl implements PostService {
         post.setContent(post.getContent().trim());
         return postRepository.save(post);
     }
+
 
 }

@@ -34,6 +34,13 @@ public class PostController {
     @Autowired
     private UserRepository userRepository;
 
+    @GetMapping("/post/list")
+    @PreAuthorize("hasRole('USER')")
+    public String list(Model model){
+        model.addAttribute("postList", postService.findAll());
+        return "post/list";
+    }
+
     @GetMapping("/post/register")
     @PreAuthorize("hasRole('ADMIN')")
     public String register(Model model){

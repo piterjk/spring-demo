@@ -40,7 +40,7 @@
 			<AppenderRef ref="FileAppender"/>
 		</Logger>
 
-		<Logger name="java.sql" level="INFO" additivity="false">
+		<Logger name="java.sql" level="DEBUG" additivity="false">
 			<AppenderRef ref="Console"/>
 			<AppenderRef ref="FileAppender"/>
 		</Logger>

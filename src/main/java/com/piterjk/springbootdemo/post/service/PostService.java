@@ -3,6 +3,7 @@ package com.piterjk.springbootdemo.post.service;
 import com.piterjk.springbootdemo.post.entity.Post;
 import com.piterjk.springbootdemo.users.entity.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface PostService {
@@ -11,4 +12,6 @@ public interface PostService {
     Post save(Post post);
 
     Post update(Long id, Post post);
+
+    List<Post> findAll();
 }
