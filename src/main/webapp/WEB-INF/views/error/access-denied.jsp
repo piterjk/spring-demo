@@ -22,8 +22,6 @@
     </main>
 </div>
 
-<button id="myButton">Click Me</button>
-
 <script nonce="3e54b9e6-40c0-425f-ac88-8a34dd0adc46">
     document.getElementById("history-back").addEventListener("click", function() {
         history.back();
