@@ -37,5 +37,7 @@
         </div>
     </main>
 </div>
+<%-- footer --%>
+<%@ include file="../layout/footer.jsp" %>
 </body>
 </html>
