@@ -1,11 +1,11 @@
-package com.piterjk.springbootdemo.config;
+package com.piterjk.springbootdemo.common.config;
 
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import com.piterjk.springbootdemo.component.CustomAccessDeniedHandler;
+import com.piterjk.springbootdemo.common.component.AppAccessDeniedHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
@@ -42,11 +42,11 @@ import java.util.UUID;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
-public class SecurityConfig {
+public class AppSecurityConfig {
 
     private final org.springframework.web.cors.CorsConfigurationSource corsConfigurationSource;
 
-    public SecurityConfig(org.springframework.web.cors.CorsConfigurationSource corsConfigurationSource) {
+    public AppSecurityConfig(org.springframework.web.cors.CorsConfigurationSource corsConfigurationSource) {
         this.corsConfigurationSource = corsConfigurationSource;
     }
 
@@ -86,7 +86,7 @@ public class SecurityConfig {
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder))) // JWT 방식 적용);
             .exceptionHandling(ex -> ex
                     .authenticationEntryPoint(new CustomAuthenticationEntryPoint()) // 401 Unauthorized 처리
-                    .accessDeniedHandler(new CustomAccessDeniedHandler())
+                    .accessDeniedHandler(new AppAccessDeniedHandler())
             )
             .build();
 

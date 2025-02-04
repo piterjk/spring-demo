@@ -1,4 +1,4 @@
-package com.piterjk.springbootdemo.config;
+package com.piterjk.springbootdemo.common.helper;
 
 import com.piterjk.springbootdemo.users.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class AclServiceHelper {
+public class AppAclServiceHelper {
 
     @Autowired
     private MutableAclService aclService;

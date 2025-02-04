@@ -1,4 +1,4 @@
-package com.piterjk.springbootdemo.component;
+package com.piterjk.springbootdemo.common.component;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @Component
-public class CustomAccessDeniedHandler implements AccessDeniedHandler {
+public class AppAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {

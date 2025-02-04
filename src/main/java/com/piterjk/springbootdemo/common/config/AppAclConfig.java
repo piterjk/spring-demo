@@ -1,4 +1,4 @@
-package com.piterjk.springbootdemo.config;
+package com.piterjk.springbootdemo.common.config;
 
 
 import org.springframework.cache.CacheManager;
@@ -15,14 +15,10 @@ import org.springframework.security.acls.model.PermissionGrantingStrategy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 
 @Configuration
-public class AclConfig {
+public class AppAclConfig {
 
     @Bean
     public PermissionGrantingStrategy permissionGrantingStrategy(AuditLogger auditLogger) {
@@ -73,7 +69,7 @@ public class AclConfig {
 //        JdbcMutableAclService aclService = new JdbcMutableAclService(dataSource, lookupStrategy, aclCache);
 
         //postgre에서는 CustomJdbcAclService 으로 설정 필요
-        JdbcMutableAclService aclService = new CustomJdbcAclService(dataSource, lookupStrategy, aclCache);
+        JdbcMutableAclService aclService = new AppJdbcAclService(dataSource, lookupStrategy, aclCache);
         // ✅ PostgreSQL용 ID 조회 SQL 직접 실행
         aclService.setClassPrimaryKeyQuery("SELECT id FROM acl_class WHERE class = ?");
         aclService.setClassIdentityQuery("SELECT currval(pg_get_serial_sequence('acl_class', 'id'))");

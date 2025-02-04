@@ -1,4 +1,4 @@
-package com.piterjk.springbootdemo.config;
+package com.piterjk.springbootdemo.common.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -10,7 +10,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import javax.sql.DataSource;
 
 @Configuration
-public class DataSourceConfig {
+public class AppDataSourceConfig {
 
     @Bean
     @Primary

@@ -1,4 +1,4 @@
-package com.piterjk.springbootdemo.config;
+package com.piterjk.springbootdemo.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,7 +7,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
-public class WebMvcConfig implements WebMvcConfigurer {
+public class AppWebMvcConfig implements WebMvcConfigurer {
 
     @Bean
     public InternalResourceViewResolver jspViewResolver() {

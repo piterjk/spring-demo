@@ -1,6 +1,6 @@
 package com.piterjk.springbootdemo.post.constoller;
 
-import com.piterjk.springbootdemo.config.AclServiceHelper;
+import com.piterjk.springbootdemo.common.helper.AppAclServiceHelper;
 import com.piterjk.springbootdemo.post.entity.Post;
 import com.piterjk.springbootdemo.post.service.PostService;
 import com.piterjk.springbootdemo.users.entity.User;
@@ -26,7 +26,7 @@ import java.util.Optional;
 public class PostController {
 
     @Autowired
-    private AclServiceHelper aclServiceHelper;
+    private AppAclServiceHelper appAclServiceHelper;
 
     @Autowired
     private PostService postService;
@@ -67,8 +67,8 @@ public class PostController {
         Post savedPost = postService.save(post);
 
         // 게시글 생성 후 작성자에게 ACL 권한 부여
-        aclServiceHelper.grantPermission(savedPost, user, BasePermission.READ);
-        aclServiceHelper.grantPermission(savedPost, user, BasePermission.WRITE);
+        appAclServiceHelper.grantPermission(savedPost, user, BasePermission.READ);
+        appAclServiceHelper.grantPermission(savedPost, user, BasePermission.WRITE);
 
         //model.addAttribute("message", "게시글이 등록되었습니다!");
         return "redirect:/post/register";

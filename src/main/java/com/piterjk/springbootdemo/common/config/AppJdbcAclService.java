@@ -1,4 +1,4 @@
-package com.piterjk.springbootdemo.config;
+package com.piterjk.springbootdemo.common.config;
 
 import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.acls.jdbc.JdbcMutableAclService;
@@ -10,9 +10,9 @@ import javax.sql.DataSource;
 import java.sql.Types;
 import java.util.List;
 
-public class CustomJdbcAclService extends JdbcMutableAclService {
+public class AppJdbcAclService extends JdbcMutableAclService {
 
-    public CustomJdbcAclService(DataSource dataSource, LookupStrategy lookupStrategy, AclCache aclCache) {
+    public AppJdbcAclService(DataSource dataSource, LookupStrategy lookupStrategy, AclCache aclCache) {
         super(dataSource, lookupStrategy, aclCache);
     }
 
