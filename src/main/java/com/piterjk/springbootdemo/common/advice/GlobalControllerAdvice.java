@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.ui.Model;
-import java.util.UUID;
 
 @ControllerAdvice
 public class GlobalControllerAdvice {
