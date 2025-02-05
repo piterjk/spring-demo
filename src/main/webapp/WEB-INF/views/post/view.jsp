@@ -30,7 +30,12 @@
 
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-primary"><a href="/post/list" class="text-white text-decoration-none">목록</a></button>
+                    <div>
                     <button type="submit" class="btn btn-primary"><a href="/post/update/${post.id}" class="text-white text-decoration-none">수정</a></button>
+                    <c:if test="${canDelete}">
+                        <button type="submit" class="btn btn-primary"><a href="/post/delete/${post.id}" class="text-white text-decoration-none">삭제</a></button>
+                    </c:if>
+                    </div>
                 </div>
 
             </div>

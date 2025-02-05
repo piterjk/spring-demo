@@ -13,4 +13,10 @@ public interface PostService {
     Post update(Long id, Post post);
 
     Page<Post> findAll(int page, int size);
+
+    void delete(Long id);
+
+    boolean canDeletePost(Long postId);
+
+
 }

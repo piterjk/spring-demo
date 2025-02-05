@@ -47,7 +47,19 @@ public class PostController {
     ) {
 
         Optional<Post> post = postService.findById(id);
+
+        // 현재 사용자가 이 게시글을 삭제할 권한이 있는지 확인
+        boolean canDelete = false;
+        try {
+            canDelete = postService.canDeletePost(id);
+            System.out.println("can delete true");
+        } catch (Exception e) {
+            System.out.println("can delete false");
+            canDelete = false;  // 권한이 없으면 예외가 발생하므로 false 처리
+        }
         model.addAttribute("post", post.get());
+        model.addAttribute("canDelete", canDelete);
+
         return "post/view";
     }
 
@@ -101,6 +113,7 @@ public class PostController {
 
         Optional<Post> post = postService.findById(id);
         model.addAttribute("post", post.get());
+
         return "post/update";
     }
 
@@ -122,5 +135,10 @@ public class PostController {
         return "redirect:/post/view/" + id.toString(); // 수정 후 상세보기 페이지로 이동
     }
 
-
+    @GetMapping("/post/delete/{id}")
+    @PreAuthorize("hasPermission(#id, 'com.piterjk.springbootdemo.post.entity.Post', 'DELETE') and hasAnyRole('USER','ADMIN')")
+    public String deletePost(@PathVariable Long id) {
+        postService.delete(id);
+        return "redirect:/post/list";
+    }
 }

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -46,5 +47,15 @@ public class PostServiceImpl implements PostService {
         return postRepository.save(post);
     }
 
+
+    @Override
+    public void delete(Long id){
+        postRepository.deleteById(id);
+    }
+
+    @PreAuthorize("hasPermission(#postId, 'com.piterjk.springbootdemo.post.entity.Post', 'DELETE')")
+    public boolean canDeletePost(Long postId) {
+        return true;  // 이 메서드가 호출되면 Security에서 권한을 자동 체크함
+    }
 
 }
