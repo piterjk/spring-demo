@@ -74,6 +74,8 @@ public class AppAclConfig {
         aclService.setClassPrimaryKeyQuery("SELECT id FROM acl_class WHERE class = ?");
         aclService.setClassIdentityQuery("SELECT currval(pg_get_serial_sequence('acl_class', 'id'))");
 
+        //aclService.setSidIdentityQuery("select currval(pg_get_serial_sequence('acl_sid', 'id'))");
+
         return aclService;
 
     }

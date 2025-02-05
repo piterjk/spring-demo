@@ -125,6 +125,7 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-acl</artifactId>
+            <version>6.4.2</version>
         </dependency>
 
         <dependency>

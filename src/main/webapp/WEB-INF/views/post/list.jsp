@@ -49,11 +49,13 @@
                                 </li>
                             </c:if>
 
-                            <c:forEach var="i" begin="0" end="${postPage.totalPages - 1}">
-                                <li class="page-item ${i == postPage.number ? 'active' : ''}">
-                                    <a class="page-link" href="?page=${i}&size=${postPage.size}">${i + 1}</a>
-                                </li>
-                            </c:forEach>
+                            <c:if test="${postPage.totalPages > 0}">
+                                <c:forEach var="i" begin="0" end="${postPage.totalPages - 1}">
+                                    <li class="page-item ${i == postPage.number ? 'active' : ''}">
+                                        <a class="page-link" href="?page=${i}&size=${postPage.size}">${i + 1}</a>
+                                    </li>
+                                </c:forEach>
+                            </c:if>
 
                             <c:if test="${postPage.number < postPage.totalPages - 1}">
                                 <li class="page-item">

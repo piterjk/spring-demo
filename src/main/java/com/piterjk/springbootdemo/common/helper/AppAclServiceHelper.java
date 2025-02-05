@@ -28,15 +28,14 @@ public class AppAclServiceHelper {
         // ✅ `ObjectIdentityImpl`에 `Long` 타입 ID 전달
         ObjectIdentity oid = new ObjectIdentityImpl(entity.getClass().getName(), entityId);
 
-        System.out.println("🔍 OID Type: " + oid.getType() + ", OID Identifier: " + oid.getIdentifier());
-        System.out.println("🔍 OID Identifier Class: " + oid.getIdentifier().getClass().getName());
-
+//        System.out.println("🔍 OID Type: " + oid.getType() + ", OID Identifier: " + oid.getIdentifier());
+//        System.out.println("🔍 OID Identifier Class: " + oid.getIdentifier().getClass().getName());
 
         Sid sid = new PrincipalSid(user.getUsername());
 
         MutableAcl acl;
         try {
-            System.out.println("aclService.readAclById(oid) : " + oid.getType());
+//            System.out.println("aclService.readAclById(oid) : " + oid.getType());
             acl = (MutableAcl) aclService.readAclById(oid);
         } catch (NotFoundException e) {
             acl = aclService.createAcl(oid);

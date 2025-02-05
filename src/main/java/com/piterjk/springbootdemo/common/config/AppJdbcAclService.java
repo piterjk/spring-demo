@@ -27,7 +27,7 @@ public class AppJdbcAclService extends JdbcMutableAclService {
                 new int[]{Types.BOOLEAN, Types.VARCHAR},
                 Long.class
         );
-        System.out.println("results : " + results.toString());
+
         if (results.isEmpty()) {
             if (!allowCreate) {
                 return null; // 생성 허용 안 하면 null 반환
