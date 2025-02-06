@@ -1,4 +1,4 @@
-package com.piterjk.springbootdemo.common.config;
+package com.piterjk.springbootdemo.common.service;
 
 import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.acls.jdbc.JdbcMutableAclService;
