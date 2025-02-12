@@ -101,3 +101,21 @@ create table posts
         constraint users_id_fkey
             references users
 );
+
+
+
+-- auto-generated definition
+create table common_code
+(
+    code       varchar(255) not null
+        constraint common_code_pk
+            primary key,
+    code_name  varchar(255),
+    code_group varchar(255) not null
+);
+
+comment on column common_code.code is '코드';
+
+comment on column common_code.code_name is '코드명';
+
+comment on column common_code.code_group is '코드 그룹';

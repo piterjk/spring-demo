@@ -41,10 +41,11 @@ public class AppAclConfig {
     }
 
     // ✅ Spring Cache 기반 CacheManager 설정
-    @Bean
-    public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager("aclCache"); // 캐시 이름 지정
-    }
+    // AppCacheConfig.java 에 이동
+    //@Bean
+    //public CacheManager cacheManager() {
+    //    return new ConcurrentMapCacheManager("aclCache"); // 캐시 이름 지정
+    //}
 
     @Bean
     public AclCache aclCache(CacheManager cacheManager,

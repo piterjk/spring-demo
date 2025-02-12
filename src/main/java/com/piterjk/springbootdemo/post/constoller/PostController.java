@@ -1,10 +1,12 @@
 package com.piterjk.springbootdemo.post.constoller;
 
 import com.piterjk.springbootdemo.common.helper.AppAclServiceHelper;
+import com.piterjk.springbootdemo.common.service.CommonCodeService;
 import com.piterjk.springbootdemo.post.entity.Post;
 import com.piterjk.springbootdemo.post.service.PostService;
 import com.piterjk.springbootdemo.users.entity.User;
 import com.piterjk.springbootdemo.users.repository.UserRepository;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,12 +33,26 @@ public class PostController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private CommonCodeService commonCodeService;
+
+
+    @PostConstruct
+    public void init() {
+        String codeName = commonCodeService.getCommonCodeName("001000");
+        System.out.println("code name : " + codeName);
+    }
+
     @GetMapping("/post/list")
     @PreAuthorize("hasRole('USER')")
     public String list(@RequestParam(defaultValue = "0") int page,
                        @RequestParam(defaultValue = "15") int size,
                        Model model){
         model.addAttribute("postPage", postService.findAll(page, size));
+
+        String codeName = commonCodeService.getCommonCodeName("001000");
+        System.out.println("code name2 : " + codeName);
+
         return "post/list";
     }
 
