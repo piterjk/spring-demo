@@ -6,19 +6,25 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
+record JwtRespose(String token){}
+
 @RestController
-public class ApiLoginController {
+public class LoginAPI {
+
     private final JwtEncoder jwtEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public ApiLoginController(JwtEncoder jwtEncoder, AuthenticationManager authenticationManager) {
+    public LoginAPI(JwtEncoder jwtEncoder, AuthenticationManager authenticationManager) {
         this.jwtEncoder = jwtEncoder;
         this.authenticationManager = authenticationManager;
     }
@@ -66,7 +72,6 @@ public class ApiLoginController {
                 .map(a->a.getAuthority())
                 .collect(Collectors.joining(" "));
     }
+
 }
 
-
-record JwtRespose(String token ){}
