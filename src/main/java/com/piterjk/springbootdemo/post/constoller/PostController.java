@@ -8,6 +8,8 @@ import com.piterjk.springbootdemo.users.entity.User;
 import com.piterjk.springbootdemo.users.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.acls.domain.BasePermission;
@@ -23,6 +25,8 @@ import java.util.Optional;
 
 @Controller
 public class PostController {
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private AppAclServiceHelper appAclServiceHelper;
@@ -40,7 +44,7 @@ public class PostController {
     @PostConstruct
     public void init() {
         String codeName = commonCodeService.getCommonCodeName("001000");
-        System.out.println("code name : " + codeName);
+        logger.debug("code name : " + codeName);
     }
 
     @GetMapping("/post/list")
@@ -51,7 +55,7 @@ public class PostController {
         model.addAttribute("postPage", postService.findAll(page, size));
 
         String codeName = commonCodeService.getCommonCodeName("001000");
-        System.out.println("code name2 : " + codeName);
+        logger.debug("code name2 : " + codeName);
 
         return "post/list";
     }
@@ -68,10 +72,10 @@ public class PostController {
         boolean canDelete = false;
         try {
             canDelete = postService.canDeletePost(id);
-            System.out.println("can delete true");
+            logger.debug("canDelete : " + canDelete);
         } catch (Exception e) {
-            System.out.println("can delete false");
             canDelete = false;  // 권한이 없으면 예외가 발생하므로 false 처리
+            logger.error(e.getMessage());
         }
         model.addAttribute("post", post.get());
         model.addAttribute("canDelete", canDelete);
