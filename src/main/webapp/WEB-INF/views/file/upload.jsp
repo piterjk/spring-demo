@@ -75,7 +75,39 @@
                 }
             });
         });
+
+        $(document).on('click','.file-download',function(event) {
+            event.preventDefault();
+            const filename = $(this).data("filename");
+            downloadFile(filename);
+        });
     });
+
+    function downloadFile(filename) {
+        $.ajax({
+            url: "/file/download",
+            type: "POST",
+            data: JSON.stringify({ filename: filename }), // JSON 데이터 전송
+            contentType: "application/json", // JSON 형식으로 전송
+            xhrFields: {
+                responseType: "blob"  // Blob 데이터로 응답 받기
+            },
+            success: function (data, status, xhr) {
+                var blob = new Blob([data], { type: xhr.getResponseHeader("Content-Type") });
+                var link = document.createElement("a");
+                link.href = window.URL.createObjectURL(blob);
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            },
+            error: function (xhr, status, error) {
+                console.error("파일 다운로드 오류:", error);
+            }
+        });
+    }
+
+
 </script>
 
 </body>

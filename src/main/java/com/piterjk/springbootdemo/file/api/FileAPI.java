@@ -1,19 +1,27 @@
 package com.piterjk.springbootdemo.file.api;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 public class FileAPI {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Value("${file.upload-dir}")
     private String uploadDir;
@@ -28,6 +36,7 @@ public class FileAPI {
         }
 
         List<String> uploadedFiles = new ArrayList<>();
+        List<String> newUploadedFiles = new ArrayList<>();
         List<String> failedFiles = new ArrayList<>();
         List<String> rejectedFiles = new ArrayList<>();
 
@@ -61,6 +70,7 @@ public class FileAPI {
                 File dest = new File(filePath);
                 file.transferTo(dest);
                 uploadedFiles.add(fileName);
+                newUploadedFiles.add(uniqueFileName);
             } catch (IOException e) {
                 failedFiles.add(fileName);
             }
@@ -68,7 +78,11 @@ public class FileAPI {
 
         StringBuilder sb = new StringBuilder();
         if (!uploadedFiles.isEmpty()) {
-            sb.append("업로드 성공: ").append(String.join(", ", uploadedFiles));
+            sb.append("업로드 성공: ");
+            int i = 0;
+            for(String file :uploadedFiles){
+                sb.append("<a href='#' class=\"file-download\" data-filename=\"").append(newUploadedFiles.get(i)).append("\" >").append(file).append("</a>");
+            }
         }
         if (!failedFiles.isEmpty()) {
             sb.append("업로드 실패: ").append(String.join(", ", failedFiles));
@@ -78,6 +92,34 @@ public class FileAPI {
         }
 
         return sb.toString();
+    }
+
+
+    @PostMapping("/file/download")
+    public ResponseEntity<Resource> downloadFile(@RequestBody Map<String, String> request) throws IOException {
+        String filename = request.get("filename"); // JSON 데이터에서 파일명 추출
+        if (filename == null || filename.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        // 파일 경로 설정
+        Path filePath = Paths.get(uploadDir+File.separator).resolve(filename).normalize();
+        logger.debug("file path : " + filePath.toString());
+        Resource resource = new UrlResource(filePath.toUri());
+
+        if (!resource.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String contentType = Files.probeContentType(filePath);
+        if (contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
+                .body(resource);
     }
 
     // 파일 확장자 추출 메서드
